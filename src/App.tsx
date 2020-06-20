@@ -16,7 +16,7 @@ function App() {
     // <Provider store={store}>
     <div className="app">
       <div className="container">
-        <Row style={{ marginBottom: "7%" }}>
+        <Row style={{ marginBottom: "10%" }}>
           <div className="col-lg-12">
             <NavBar></NavBar>
           </div>

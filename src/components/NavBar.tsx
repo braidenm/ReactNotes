@@ -21,10 +21,10 @@ class NavBar extends Component {
                 </Nav.Link>
               </li>
               <li className="nav-item">
-                <Nav.Link>Notes</Nav.Link>
+                <Nav.Link>Profile</Nav.Link>
               </li>
               <li className="nav-item">
-                <Nav.Link>Profile</Nav.Link>
+                <Nav.Link>About</Nav.Link>
               </li>
               <li className="nav-item">
                 <Nav.Link></Nav.Link>

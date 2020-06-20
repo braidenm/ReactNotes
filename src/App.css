@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+ 
 }
 
 .App-logo {
@@ -55,7 +56,7 @@
   background-color: red;
 }
 .warning {
-  background-color: yellow;
+  background-color: rgb(218, 218, 0);
 }
 .safe {
   background-color: green;
@@ -192,14 +193,10 @@ input {
   color: red;
 }
 
-.app {
-  height: 600px;
-  width: 100%;
-  margin-top: 0%;
-  background-color: rgba(0, 0, 0, 0.849);
-  /* background-image: url("./photos/background-wood.jpg"); */
-}
-
 button {
   margin: 5%;
+}
+
+body {
+   background-color: rgba(0, 0, 0, 0.849);
 }
