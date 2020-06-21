@@ -25,7 +25,7 @@ constructor(props: any){
 
   addNote(){
     let note: Note = {
-      id:  Math.floor(Math.random() * (10000 - 7)) + 7,
+      // id:  Math.floor(Math.random() * (10000 - 7)) + 7,
       title: this.state.title,
       completed: false,
       deleted: false

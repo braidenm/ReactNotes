@@ -21,3 +21,14 @@ export const removeCompletedNotes = (notes: Note[]): Note[] => {
 
     return copiedNote;
   }
+
+  export const sortNotes = (notes: Note[]): Note[] =>{
+    let result = notes.sort((a, b) => {
+      if (a.updated > b.updated) {
+        return -1;
+      }
+      return 1;
+    });
+
+    return result;
+  }

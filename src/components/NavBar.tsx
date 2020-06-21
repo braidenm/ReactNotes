@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import Login from "./Login";
 // import Button from "react-bootstrap/Button";
 
-class NavBar extends Component {
-  state = {
-    dog: "",
-  };
+class NavBar extends Component<{ setIsLoggedIn(isLoggedIn: boolean): void }> {
+  // state = {
+  //   dog: "",
+  // };
 
   render() {
     return (
@@ -30,10 +31,15 @@ class NavBar extends Component {
                 <Nav.Link></Nav.Link>
               </li>
             </ul>
+            <ul className="nav navbar-nav right">
+              <li className="nav-item ">
+                <Login setIsLoggedIn={this.props.setIsLoggedIn}></Login>
+              </li>
+            </ul>
           </div>
         </Navbar>
 
-        <h1>{this.state.dog}</h1>
+        {/* <h1>{this.state.dog}</h1> */}
       </div>
     );
   }

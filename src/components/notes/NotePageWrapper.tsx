@@ -4,9 +4,12 @@ import NoteCounter from "./NoteCounter";
 import Search from "./Search";
 import AddNote from "./AddNote";
 import { Note } from "../../interfaces/Note";
-import { removeCompletedNotes } from "../../utilities/Filters";
+import { removeCompletedNotes, sortNotes } from "../../utilities/Filters";
 import { User } from "../../interfaces/User";
 import axios from "axios";
+import { connect } from "react-redux";
+import { getAllNotes, insertNote } from '../../actions/noteActions'
+import { GET_NOTES, INSERT_NOTE } from "../../actions/types";
 
 interface noteState {
   allNotes: Note[];
@@ -15,7 +18,18 @@ interface noteState {
   marked: boolean;
 }
 
-export default class NotePageWrapper extends Component<{}, noteState> {
+interface NoteProps{
+  // getAllNotes(): Note[],
+  // insertNote(note: Note): Promise<Note>,
+  // allNotes: Note[];
+  // note: Note;
+  isLoggedIn: boolean
+
+}
+
+export default class NotePageWrapper extends Component<NoteProps, noteState> {
+
+
   constructor(props: any) {
     super(props);
 
@@ -26,6 +40,8 @@ export default class NotePageWrapper extends Component<{}, noteState> {
       marked: false,
     };
 
+
+    
     this.componentDidMount = this.componentDidMount.bind(this);
     this.countCompletedNotes = this.countCompletedNotes.bind(this);
     this.showMarked = this.showMarked.bind(this);
@@ -34,13 +50,23 @@ export default class NotePageWrapper extends Component<{}, noteState> {
     this.search = this.search.bind(this);
   }
 
+  componentDidUpdate(preProps:any){
+    if(preProps !== this.props){
+      console.log("in the notePageWrapper after update!!!!!!!!!");
+      
+    }
+  }
+
   componentDidMount() {
     let userName = "admin";
     let password = "password";
-
+    
+    // console.log(this.props.stores);
+    
     this.login(userName, password)
       .then(() => {
         return this.getAllNotes();
+        // return this.props.getAllNotes();
       })
       .then((resp) => {
         let notes: Note[] = resp;
@@ -62,9 +88,6 @@ export default class NotePageWrapper extends Component<{}, noteState> {
           return 1;
         });
 
-        // notes.forEach((note) => {
-        //   note = formatNoteDate(note);
-        // });
         return notes;
       });
     }
@@ -116,19 +139,21 @@ export default class NotePageWrapper extends Component<{}, noteState> {
     if (note.deleted) {
       axios.delete(this.noteUrl + "/" + note.id, this.getHttp()).then(() => {
         notes.splice(index, 1);
-        this.updateState(notes);
+        this.updateState(sortNotes(notes));
       });
     } else if (index === -1) {
       axios.post(this.noteUrl, note, this.getHttp()).then((resp) => {
         notes.unshift(resp.data);
-        this.updateState(notes);
+        this.updateState(sortNotes(notes));
       });
+      // this.props.insertNote(note);
     } else {
       axios
         .put(this.noteUrl + "/" + note.id, note, this.getHttp())
         .then((resp) => {
           notes[index] = resp.data;
-          this.updateState(notes);
+
+          this.updateState(sortNotes(notes));
         });
     }
   }
@@ -139,6 +164,8 @@ export default class NotePageWrapper extends Component<{}, noteState> {
       noteCount: this.countCompletedNotes(notes),
     });
   }
+
+  
 
   render() {
     return (
@@ -176,7 +203,9 @@ export default class NotePageWrapper extends Component<{}, noteState> {
     );
   }
 
+  //*****************
   //Auth Stuff
+  //******************
 
   // private baseUrl = environment.baseUrl;
   private baseUrl = "http://localhost:8085/";
@@ -195,8 +224,7 @@ export default class NotePageWrapper extends Component<{}, noteState> {
       },
     };
     // create request to authenticate credentials
-    return axios
-      .get<User>(this.baseUrl + "authenticate", httpOptions)
+    return axios.get<User>(this.baseUrl + "authenticate", httpOptions)
       .then((res) => {
         localStorage.setItem("credentials", credentials);
         return res;
@@ -252,5 +280,30 @@ export default class NotePageWrapper extends Component<{}, noteState> {
         "X-Requested-With": "XMLHttpRequest",
       },
     };
+
   }
 }
+
+// const mapStateToProps = (state: any)=> ({
+//   allNotes: state.noteReducer.notes,
+//   note: state.noteReducer.note,
+  
+//   // allNotes: state.notes,
+//   // displayNotes: Note[];
+//   noteCount: 0,
+//   marked: true,
+// })
+
+// const mapDispatchToProps = (dispatch: any) => {
+//   return {
+//     // dispatching plain actions
+//     // getAllNotes: () => dispatch({ type: GET_NOTES }),
+//     getAllNotes: () => dispatch(getAllNotes),
+//     insertNote: () => dispatch({ type: INSERT_NOTE }),
+//     // reset: () => dispatch({ type: 'RESET' })
+//     // dispatch
+//   }
+// }
+
+// export default connect(mapStateToProps, {getAllNotes, insertNote} )(NotePageWrapper)
+// export default connect(mapStateToProps, mapDispatchToProps)(NotePageWrapper)
