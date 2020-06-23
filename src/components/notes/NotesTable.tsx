@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import NoteRow from "./NoteRow";
 import { Note } from "../../interfaces/Note";
-import { NoteRowProps } from "../../interfaces/NoteRowProps";
+import NoteRow, { NoteRowProps } from "./NoteRow";
 
 interface noteTableProps {
   notes: Note[];
-  updateNote(note: Note, index: number): void;
+  updateNote(note: Note): void;
   showCompleted: boolean;
-
+  toggleNoteView(note: Note): void
 }
 
 interface noteTableState {
   noteRows: Component[];
+  selectedNoteId: number;
 }
 
 export class NotesTable extends Component<noteTableProps, noteTableState> {
@@ -20,28 +20,26 @@ export class NotesTable extends Component<noteTableProps, noteTableState> {
 
     this.state = {
       noteRows: [],
+      selectedNoteId: 0,
     };
-
-    this.componentDidMount = this.componentDidMount.bind(this);
-    // this.componentDidUpdate = this.componentDidUpdate.bind(this);
-    this.updateDisplayNotes = this.updateDisplayNotes.bind(this);
-    this.markCompleted = this.markCompleted.bind(this);
-    this.markCompleted = this.markCompleted.bind(this);
-    this.deleteNote = this.deleteNote.bind(this);
-    this.openRow = this.openRow.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.updateDisplayNotes(this.props.notes);
-  }
+  };
 
-  componentDidUpdate(prevProps: any) {
+  componentDidUpdate = (prevProps: any) => {
     if (prevProps !== this.props) {
       this.updateDisplayNotes(this.props.notes);
     }
-  }
+  };
 
-  updateDisplayNotes(notes: Note[]) {
+  //pass in 0 to see all notes
+  // getSelectedNote = (noteId: number) => {
+  //   this.setState({ selectedNoteId: noteId });
+  // };
+
+  updateDisplayNotes = (notes: Note[]) => {
     let rowComponent: any = [];
 
     notes.forEach((note: Note, index: number) => {
@@ -50,51 +48,51 @@ export class NotesTable extends Component<noteTableProps, noteTableState> {
         let noteRowProps: NoteRowProps = {
           index: index,
           note: note,
-          openRow: this.openRow,
+          toggleNoteView: this.props.toggleNoteView,
           markCompleted: this.markCompleted,
           deleteNote: this.deleteNote,
         };
-  
+
         rowComponent.push(<NoteRow key={note.id} {...noteRowProps}></NoteRow>);
       }
     });
 
     this.setState({ noteRows: rowComponent });
-  }
+  };
 
-  openRow(index: number) {
-    console.log("open row: " + index);
-  }
+  
 
-  markCompleted(note: Note, index: number) {
-    this.props.updateNote(note, index);
-  }
 
-  deleteNote(note: Note, index: number) {
-    if(window.confirm("Are you sure you want to delete this note?")){
-        note.deleted = true;
-        this.props.updateNote(note, index);
+
+  markCompleted = (note: Note) => {
+    this.props.updateNote(note);
+  };
+
+  deleteNote = (note: Note) => {
+    if (window.confirm("Are you sure you want to delete this note?")) {
+      note.deleted = true;
+      this.props.updateNote(note);
     }
-  }
+  };
 
   render() {
-    return (
-      <div className="notesBody">
-        <table
-          className="table table-striped table-hover"
-          style={{ border: "solid" }}
-        >
-          <thead className="thead-dark">
-            <tr>
-              <th>Title</th>
-              <th>Mark</th>
-              <th>Last Updated</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>{this.state.noteRows}</tbody>
-        </table>
-      </div>
-    );
+      return (
+        <div className="notesBody">
+          <table
+            className="table table-striped table-hover"
+            style={{ border: "solid" }}
+          >
+            <thead className="thead-dark">
+              <tr>
+                <th>Title</th>
+                <th>Mark</th>
+                <th>Last Updated</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>{this.state.noteRows}</tbody>
+          </table>
+        </div>
+      );
   }
 }

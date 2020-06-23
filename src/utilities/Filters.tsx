@@ -30,5 +30,9 @@ export const removeCompletedNotes = (notes: Note[]): Note[] => {
       return 1;
     });
 
+    result.forEach( (note, index) => {
+        note.index = index;
+    })
+
     return result;
   }

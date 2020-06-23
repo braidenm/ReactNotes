@@ -10,5 +10,6 @@ export interface Note {
     updated?: string;
     user?: User;
     deleted?: boolean;
+    index?: number;
   
   }

@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import axios from "axios";
 import {
-  generateBasicAuthCredentials,
-  getHttp,
-  checkLogin,
-  baseUrl,
+  login,
+  updateCredentials
 } from "../auth/auth";
-import { User } from "../interfaces/User";
 
 interface LoginState {
   invalidLogin: String;
@@ -16,6 +12,7 @@ interface LoginState {
 }
 interface LoginProps {
   setIsLoggedIn(isLoggedIn: boolean): void;
+  isLoggedIn: boolean;
 }
 
 export default class Login extends Component<LoginProps, LoginState> {
@@ -28,51 +25,30 @@ export default class Login extends Component<LoginProps, LoginState> {
       userName: "",
       password: "",
     };
-
-    this.onUserName = this.onUserName.bind(this);
-    this.onPassword = this.onPassword.bind(this);
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.showLogIn = this.showLogIn.bind(this);
-    this.showLogOut = this.showLogOut.bind(this);
   }
 
-  onUserName(event: any) {
+  componentDidUpdate = (preProps: any) => {
+    if (preProps !== this.props) {
+      this.setState({ isLoggedIn: this.props.isLoggedIn });
+    }
+  };
+
+  onUserName = (event: any) => {
     this.setState({ userName: event.target.value });
-  }
+  };
 
-  onPassword(event: any) {
+  onPassword = (event: any) => {
     this.setState({ password: event.target.value });
-  }
+  };
 
-  login(event:any) {
-      console.log('hello');
-      
-    // Make credentials
-    const credentials = generateBasicAuthCredentials(
-      this.state.userName,
-      this.state.password
-    );
-    // Send credentials as Authorization header (this is spring security convention for basic auth)
-    const httpOptions = {
-      headers: {
-        Authorization: `Basic ${credentials}`,
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    };
-    // create request to authenticate credentials
-    return axios
-      .get<User>(baseUrl + "authenticate", httpOptions)
+  login = (event: any) => {
+    login(this.state.userName, this.state.password)
       .then((res) => {
-          console.log('in the the then');
-          
-        localStorage.setItem("credentials", credentials);
+        updateCredentials(this.state.userName, this.state.password);
 
-
-        this.setState({ isLoggedIn: true }, () => {this.props.setIsLoggedIn(true)} );
-        
-
-        // return res;
+        this.setState({ isLoggedIn: true }, () => {
+          this.props.setIsLoggedIn(true);
+        });
       })
       .catch((error) => {
         this.setState({
@@ -80,23 +56,25 @@ export default class Login extends Component<LoginProps, LoginState> {
           isLoggedIn: false,
         });
       });
-  }
+  };
 
-  logout() {
+  logout = () => {
     localStorage.removeItem("credentials");
 
+    this.setState(
+      {
+        isLoggedIn: false,
+        userName: "",
+        password: "",
+        invalidLogin: "",
+      },
+      () => {
+        this.props.setIsLoggedIn(false);
+      }
+    );
+  };
 
-    this.setState({
-      isLoggedIn: false,
-      userName: "",
-      password: "",
-      invalidLogin: "",
-    }, () => {this.props.setIsLoggedIn(false)} );
-
-    // this.props.setIsLoggedIn(false);
-  }
-
-  showLogIn() {
+  showLogIn = () => {
     if (!this.state.isLoggedIn) {
       return (
         <div>
@@ -125,27 +103,19 @@ export default class Login extends Component<LoginProps, LoginState> {
     } else {
       return (
         <div>
-          <input type='button' onClick={this.logout} value="log out" className="btn btn-outline-primary"/>
+          <input
+            type="button"
+            onClick={this.logout}
+            value="log out"
+            className="btn btn-outline-primary"
+          />
         </div>
       );
     }
-
-  }
-
-  showLogOut() {
-    return (
-      <div>
-        <button className="btn btn-outline-primary">Logout</button>
-      </div>
-    );
-  }
+  };
 
   render() {
-    return <div>{this.showLogIn()}</div>
+    return <div>{this.showLogIn()}</div>;
 
-
-    {
-      /* {this.state.isLoggedIn && this.showLogIn}{!this.state.isLoggedIn && this.showLogIn}</div>; */
-    }
   }
 }

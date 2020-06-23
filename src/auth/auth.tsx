@@ -1,6 +1,11 @@
+import axios from "axios";
+import { User } from "../interfaces/User";
+ 
+ 
  // private baseUrl = environment.baseUrl;
  export const baseUrl = "http://localhost:8085/";
  export const noteUrl = baseUrl + "api/notes";
+
 
 
 export const getCredentials = () => {
@@ -34,3 +39,18 @@ export const getCredentials = () => {
     const credentials = generateBasicAuthCredentials(username, password);
     localStorage.setItem("credentials", credentials);
   }
+
+  export const login = (userName: string, password: string) => {
+
+    //specifically not updating creditials in case it is not valid
+  const credentials = generateBasicAuthCredentials(userName,password);
+
+  // Send credentials as Authorization header (this is spring security convention for basic auth)
+  const httpOptions = {
+    headers: {
+      Authorization: `Basic ${credentials}`,
+      "X-Requested-With": "XMLHttpRequest",
+    },
+  };
+  // create request to authenticate credentials
+  return axios.get<User>(baseUrl + "authenticate", httpOptions)}

@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+import { Link, NavLink } from "react-router-dom";
 import Login from "./Login";
 // import Button from "react-bootstrap/Button";
 
-class NavBar extends Component<{ setIsLoggedIn(isLoggedIn: boolean): void }> {
+interface NavBarProps {
+  setIsLoggedIn(isLoggedIn: boolean): void;
+  isLoggedIn: boolean;
+}
+class NavBar extends Component<NavBarProps> {
   // state = {
   //   dog: "",
   // };
@@ -13,27 +17,26 @@ class NavBar extends Component<{ setIsLoggedIn(isLoggedIn: boolean): void }> {
     return (
       <div>
         <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-          <Navbar.Brand>Notes</Navbar.Brand>
+          <Link to="/notes">
+            <Navbar.Brand>Notes</Navbar.Brand>
+          </Link>
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Nav.Link>
-                  Home <span className="sr-only">(current)</span>
-                </Nav.Link>
-              </li>
-              <li className="nav-item">
-                <Nav.Link>Profile</Nav.Link>
-              </li>
-              <li className="nav-item">
-                <Nav.Link>About</Nav.Link>
-              </li>
-              <li className="nav-item">
-                <Nav.Link></Nav.Link>
-              </li>
-            </ul>
+              <div className="nav-spacing">
+                <NavLink to="/home">Home</NavLink>
+              </div>
+              <div className="nav-spacing">
+                <NavLink to="/profile">Profile</NavLink>
+              </div>
+              <div className="nav-spacing">
+                <NavLink to="/about">About</NavLink>
+              </div>
+              <div className="nav-spacing">
+                <NavLink to="/admin">Admin</NavLink>
+              </div>
+
             <ul className="nav navbar-nav right">
-              <li className="nav-item ">
-                <Login setIsLoggedIn={this.props.setIsLoggedIn}></Login>
+              <li>
+                <Login setIsLoggedIn={this.props.setIsLoggedIn} isLoggedIn={this.props.isLoggedIn}></Login>
               </li>
             </ul>
           </div>

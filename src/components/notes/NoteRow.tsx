@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NoteRowProps } from "../../interfaces/NoteRowProps";
+import { Note } from "../../interfaces/Note";
 import { formatNoteDate } from "../../utilities/Filters";
 // import { Note } from "../../interfaces/Note";
 
@@ -9,6 +9,14 @@ interface NoteRowState{
   // completed: boolean,
   // updated: Date,
   strikeOut: string;
+}
+
+export interface NoteRowProps{
+  note: Note,
+  index: number,
+  toggleNoteView(note: Note):void,
+  markCompleted(note: Note):void,
+  deleteNote(note: Note):void,
 }
 
 export default class NoteRow extends Component<NoteRowProps, NoteRowState> {
@@ -24,23 +32,19 @@ export default class NoteRow extends Component<NoteRowProps, NoteRowState> {
       strikeOut: ''
     }
     
-    this.openRow = this.openRow.bind(this);
-    this.markCompleted = this.markCompleted.bind(this);
-    this.deleteNote = this.deleteNote.bind(this);
-    this.updateNote = this.updateNote.bind(this);
   }
 
-  componentDidMount(){
-    this.updateNote();
+  componentDidMount = () =>{
+    this.updateNoteView();
   }
 
-  componentDidUpdate(prevProps: any) {
+  componentDidUpdate = (prevProps: any) => {
     if (prevProps.note !== this.props.note) {
-       this.updateNote();
+       this.updateNoteView();
     }
   }
 
-  updateNote() {
+  updateNoteView = () => {
     let strikeOut = this.props.note.completed ? 'strikeout' : '';
 
 
@@ -53,20 +57,20 @@ export default class NoteRow extends Component<NoteRowProps, NoteRowState> {
     //               strikeOut: strikeOut})
   }
 
-  openRow(){
-    this.props.openRow(this.props.index);
+  openRow = () => {
+    this.props.toggleNoteView(this.props.note);
   }
 
-  markCompleted(){
+  markCompleted = () => {
     let note = {...this.props.note};
 
     note.completed = !note.completed;
 
-    this.props.markCompleted(note, this.props.index)
+    this.props.markCompleted(note)
   }
 
-  deleteNote(){
-    this.props.deleteNote({...this.props.note}, this.props.index)
+  deleteNote = () => {
+    this.props.deleteNote(this.props.note);
   }
 
 

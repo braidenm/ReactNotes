@@ -1,5 +1,7 @@
-import React, { Component } from 'react'
-import { Note } from '../../interfaces/Note'
+import React, { Component } from 'react';
+import { Note } from '../../interfaces/Note';
+import { preventDefault } from "../../utilities/Utilities";
+
 
 interface AddNoteProps{
   updateNote(note: Note, index: number): void;
@@ -42,17 +44,17 @@ constructor(props: any){
       this.setState({title: event.target.value})
   }
 
+  
+
 
   render() {
     return (
       <div className="col">
-      <form>
+      <form onSubmit={preventDefault}>
         <div className="col-lg-12">
           <input
             className="form-control"
-            id="addTitle"
             type="text"
-            name="title"
             value={this.state.title}
             placeholder="title"
             onChange={this.onChangeTitle}
@@ -63,7 +65,7 @@ constructor(props: any){
             Add
           </button>
         </div>
-      </form>
+      </form >
     </div>
     )
   }
