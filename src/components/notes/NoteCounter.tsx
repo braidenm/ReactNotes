@@ -18,22 +18,20 @@ constructor(props:NoteCounterProps){
         colorOfBox: 'safe'
     }
 
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.componentDidUpdate = this.componentDidUpdate.bind(this);
 }
 
-componentDidMount(){
+componentDidMount = () =>{
       this.setState({colorOfBox: this.dangerLevel(this.props.count)})
 }
 
-componentDidUpdate(prevProps: any){
+componentDidUpdate = (prevProps: any) => {
     if(prevProps !== this.props){
       this.setState({colorOfBox: this.dangerLevel(this.props.count)})
 
     }
 }
 
-dangerLevel(count:number) {
+dangerLevel = (count:number) =>{
   if (count >= 6) {
     return 'danger';
   }
@@ -44,10 +42,10 @@ dangerLevel(count:number) {
 
 }
 
-
-
   render() {
+    
     return (
+      
         <div className="col-lg-6">
           <h1>
             <label>Notes</label> <span className={'count ' + this.state.colorOfBox}>{this.props.count}</span>{" "}

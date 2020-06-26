@@ -11,17 +11,12 @@ import Search from "./Search";
 
 interface noteState {
   allNotes: Note[];
-  // displayNotes: Note[];
   noteCount: number;
   marked: boolean;
   selectedNote: Note;
 }
 
 interface NoteProps{
-  // getAllNotes(): Note[],
-  // insertNote(note: Note): Promise<Note>,
-  // allNotes: Note[];
-  // note: Note;
   isLoggedIn: boolean
 
 }
@@ -34,7 +29,6 @@ export default class NotePageWrapper extends Component<NoteProps, noteState> {
 
     this.state = {
       allNotes: [],
-      // displayNotes: [],
       noteCount: 0,
       marked: false,
       selectedNote: {},
@@ -56,13 +50,10 @@ export default class NotePageWrapper extends Component<NoteProps, noteState> {
         let notes:Note[] = [];
         this.updateState(notes);
       }
-
-      
     }
   }
 
   componentDidMount = () =>{
-
 
     if(this.props.isLoggedIn){
       this.getAllNotes().then((resp) => {
@@ -109,7 +100,6 @@ export default class NotePageWrapper extends Component<NoteProps, noteState> {
     if (notes) {
       count = removeCompletedNotes(notes).length;
     }
-
     return count;
   }
 
@@ -134,7 +124,6 @@ export default class NotePageWrapper extends Component<NoteProps, noteState> {
         notes.unshift(resp.data);
         this.updateState(sortNotes(notes));
       });
-      // this.props.insertNote(note);
 //handle updating existing note
     } else {
       axios
@@ -212,8 +201,6 @@ export default class NotePageWrapper extends Component<NoteProps, noteState> {
       return (<h1>PLEASE LOGIN</h1>)
     }
   }
-
-  
 
   render() {
     if(this.state.selectedNote.id){

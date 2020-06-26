@@ -34,12 +34,16 @@ export default class Login extends Component<LoginProps, LoginState> {
   };
 
   onUserName = (event: any) => {
-    this.setState({ userName: event.target.value });
+    this.setState({ userName: event.target.value});
   };
 
   onPassword = (event: any) => {
-    this.setState({ password: event.target.value });
+    this.setState({ password: event.target.value});
   };
+
+  clearMessage = () => {
+    this.setState({invalidLogin: ""});
+  }
 
   login = (event: any) => {
     login(this.state.userName, this.state.password)
@@ -82,12 +86,14 @@ export default class Login extends Component<LoginProps, LoginState> {
             <input
               type="text"
               onChange={this.onUserName}
+              onClick={this.clearMessage}
               placeholder="Username"
               name="username"
             />
             <input
               type="password"
               onChange={this.onPassword}
+              onClick={this.clearMessage}
               placeholder="Password"
               name="password"
             />
@@ -115,7 +121,12 @@ export default class Login extends Component<LoginProps, LoginState> {
   };
 
   render() {
-    return <div>{this.showLogIn()}</div>;
+      return (
+      <div>
+        
+          <div>{this.showLogIn()}</div>
+          {this.state.invalidLogin ? <h1 className="invalid">{this.state.invalidLogin}</h1> : '' }
 
+      </div>)
   }
 }

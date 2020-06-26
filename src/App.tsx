@@ -4,9 +4,9 @@ import React, { Component } from "react";
 import Row from "react-bootstrap/Nav";
 import {
   BrowserRouter as Router,
-
-
-  Redirect, Route, Switch
+  Redirect,
+  Route,
+  Switch,
 } from "react-router-dom";
 import "./App.css";
 import About from "./components/About";
@@ -41,48 +41,58 @@ export default class App extends Component<{}, AppState> {
 
   componentWillUnmount = () => {
     localStorage.removeItem("credentials");
-  }
-
-  
+  };
 
   render() {
     return (
       // <Provider store={store}>
       <div className="app">
-        <div className="container">
           <Router>
-            <Row style={{ marginBottom: "10%" }}>
-              <div className="col-lg-12">
-                <NavBar
-                  setIsLoggedIn={this.setIsLoggedIn}
-                  isLoggedIn={this.state.isLoggedIn}
-                ></NavBar>
-              </div>
-            </Row>
+            <div className="container">
+
+              <Row style={{ marginBottom: "15%" }}>
+                <div className="col-lg-12">
+                  <NavBar
+                    setIsLoggedIn={this.setIsLoggedIn}
+                    isLoggedIn={this.state.isLoggedIn}
+                  ></NavBar>
+                </div>
+              </Row>
+            </div>
+          <div className="container">
             <Row>
               <Switch>
-                
                 <Route path="/notes">
                   <div className="col-lg-8 offset-lg-2 notes">
-                    {this.state.isLoggedIn ? (<NotePageWrapper isLoggedIn={this.state.isLoggedIn} />) : (<Redirect to="/" />)}
+                    {this.state.isLoggedIn ? (
+                      <NotePageWrapper isLoggedIn={this.state.isLoggedIn} 
+                      />) : (<Redirect to="/" />)}
                   </div>
                 </Route>
 
                 <Route path="/home">
-                <div className="col-lg-8 offset-lg-2">
-                  <Home></Home>
+                  <div className="col-lg-8 offset-lg-2">
+                    <Home></Home>
                   </div>
                 </Route>
 
                 <Route path="/profile">
-                    {this.state.isLoggedIn ? (<ProfileWrapper />) : (<Redirect to="/register" />)}
+                  <div className="col-lg-8 offset-lg-2 ">
+                    {this.state.isLoggedIn ? (
+                      <ProfileWrapper
+                        setIsLoggedIn={this.setIsLoggedIn}
+                        isLoggedIn={this.state.isLoggedIn}
+                      />) : (<Redirect to="/register" />)}
+                  </div>
                 </Route>
 
                 <Route path="/register">
                   <div className="col-lg-8 offset-lg-2">
-                    <Register setIsLoggedIn={this.setIsLoggedIn} isLoggedIn={this.state.isLoggedIn}></Register>
+                    <Register
+                      setIsLoggedIn={this.setIsLoggedIn}
+                      isLoggedIn={this.state.isLoggedIn}
+                    ></Register>
                   </div>
-
                 </Route>
 
                 <Route path="/admin">
@@ -95,11 +105,11 @@ export default class App extends Component<{}, AppState> {
                   </div>
                 </Route>
 
-                <Redirect from='/' to='/home' />
+                <Redirect from="/" to="/home" />
               </Switch>
             </Row>
-          </Router>
-        </div>
+          </div>
+        </Router>
       </div>
       // </Provider>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Navbar from "react-bootstrap/Navbar";
+import { Navbar, Nav } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import Login from "./Login";
 // import Button from "react-bootstrap/Button";
@@ -16,11 +16,13 @@ class NavBar extends Component<NavBarProps> {
   render() {
     return (
       <div>
-        <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <Navbar expand="lg" className="navbar-dark bg-dark fixed-top">
           <Link to="/notes">
             <Navbar.Brand>Notes</Navbar.Brand>
           </Link>
-          <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <Navbar.Toggle />
+
+          <Navbar.Collapse id="navbarNavDropdown">
               <div className="nav-spacing">
                 <NavLink to="/home">Home</NavLink>
               </div>
@@ -30,19 +32,20 @@ class NavBar extends Component<NavBarProps> {
               <div className="nav-spacing">
                 <NavLink to="/about">About</NavLink>
               </div>
-              <div className="nav-spacing">
+              {/* <div className="nav-spacing">
                 <NavLink to="/admin">Admin</NavLink>
-              </div>
+              </div> */}
 
             <ul className="nav navbar-nav right">
               <li>
-                <Login setIsLoggedIn={this.props.setIsLoggedIn} isLoggedIn={this.props.isLoggedIn}></Login>
+                <Login
+                  setIsLoggedIn={this.props.setIsLoggedIn}
+                  isLoggedIn={this.props.isLoggedIn}
+                ></Login>
               </li>
             </ul>
-          </div>
+          </Navbar.Collapse>
         </Navbar>
-
-        {/* <h1>{this.state.dog}</h1> */}
       </div>
     );
   }

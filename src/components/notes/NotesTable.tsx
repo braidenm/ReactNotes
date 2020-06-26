@@ -15,6 +15,7 @@ interface noteTableState {
 }
 
 export class NotesTable extends Component<noteTableProps, noteTableState> {
+  
   constructor(props: noteTableProps) {
     super(props);
 
@@ -25,24 +26,24 @@ export class NotesTable extends Component<noteTableProps, noteTableState> {
   }
 
   componentDidMount = () => {
+
     this.updateDisplayNotes(this.props.notes);
   };
 
   componentDidUpdate = (prevProps: any) => {
+
     if (prevProps !== this.props) {
+
       this.updateDisplayNotes(this.props.notes);
     }
   };
 
-  //pass in 0 to see all notes
-  // getSelectedNote = (noteId: number) => {
-  //   this.setState({ selectedNoteId: noteId });
-  // };
-
   updateDisplayNotes = (notes: Note[]) => {
+
     let rowComponent: any = [];
 
     notes.forEach((note: Note, index: number) => {
+
       //if the toggle for show completed is true show all otherwise only show not completed notes
       if (this.props.showCompleted || !note.completed) {
         let noteRowProps: NoteRowProps = {
@@ -60,23 +61,24 @@ export class NotesTable extends Component<noteTableProps, noteTableState> {
     this.setState({ noteRows: rowComponent });
   };
 
-  
-
-
-
   markCompleted = (note: Note) => {
+
     this.props.updateNote(note);
   };
 
   deleteNote = (note: Note) => {
+
     if (window.confirm("Are you sure you want to delete this note?")) {
+
       note.deleted = true;
       this.props.updateNote(note);
     }
   };
 
   render() {
+
       return (
+
         <div className="notesBody">
           <table
             className="table table-striped table-hover"

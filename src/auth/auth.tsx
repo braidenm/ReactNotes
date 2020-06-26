@@ -5,6 +5,7 @@ import { User } from "../interfaces/User";
  // private baseUrl = environment.baseUrl;
  export const baseUrl = "http://localhost:8085/";
  export const noteUrl = baseUrl + "api/notes";
+ export const userUrl = baseUrl + "api/users";
 
 
 

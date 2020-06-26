@@ -12,10 +12,8 @@ interface NoteDetailProps {
   updateNote(note: Note): void;
 }
 
-export default class NoteDetail extends Component<
-  NoteDetailProps,
-  NoteDetailState
-> {
+export default class NoteDetail extends Component<NoteDetailProps, NoteDetailState> {
+
   constructor(props: NoteDetailProps) {
     super(props);
 
@@ -30,6 +28,7 @@ export default class NoteDetail extends Component<
   }
 
   componentDidUpdate = (preProps: NoteDetailProps) => {
+
     if(preProps !== this.props){
       let tempNote = { ...this.props.selectedNote };
 
@@ -45,6 +44,7 @@ export default class NoteDetail extends Component<
   }
 
   componentDidMount = () => {
+
     let tempNote = { ...this.props.selectedNote };
 
     tempNote.title = tempNote.title ? tempNote.title: '';
@@ -57,14 +57,17 @@ export default class NoteDetail extends Component<
   };
 
   toggleEdit = () => {
+
     this.setState({ showEdit: !this.state.showEdit });
   };
 
   showTable = () => {
+
     this.props.toggleNoteView({});
   };
 
   changeDetails = (event: any) => {
+
     let tempNote = { ...this.state.editingNote };
 
     tempNote.details = event.target.value;
@@ -73,6 +76,7 @@ export default class NoteDetail extends Component<
   };
 
   changeTitle = (event: any) => {
+
     let tempNote = { ...this.state.editingNote };
 
     tempNote.title = event.target.value;
@@ -81,6 +85,7 @@ export default class NoteDetail extends Component<
   };
 
   cancel = () => {
+
     this.setState({
       editingNote: { ...this.state.selectedNote },
       showEdit: false,
@@ -88,11 +93,14 @@ export default class NoteDetail extends Component<
   };
 
   save = () => {
+
     this.props.updateNote(this.state.editingNote);
   };
 
   render() {
+
     if (this.state.showEdit) {
+      
       return (
         <div className="note-wrapper-page">
           <form className="form-group" onSubmit={(event) => {event.preventDefault()}}>

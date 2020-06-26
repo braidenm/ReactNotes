@@ -73,10 +73,8 @@ export default class Register extends Component<RegisterProps, RegisterState> {
     let isValid = event.target.checkValidity();
 
     if (isValid) {
-      console.log("inside register!!");
 
       let user: User = { ...this.state };
-      console.log(event.target.firstName.value);
 
       axios.post<User>(baseUrl + "register", user).then((response) => {
         if (response.data.username === "notUnique") {

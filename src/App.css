@@ -72,6 +72,8 @@
   border: thin;
   border-radius: 10px;
   overflow-y: hidden;
+  margin-top: 5%;
+
 }
 
 .right {
@@ -167,6 +169,7 @@ button {
   border-radius: 10px;
   padding-top: 3%;
   padding-bottom: 1%;
+  margin-top: 5%;
 }
 
 .profile {
@@ -180,14 +183,17 @@ button {
   border-style: solid;
   border-width: thin;
   border-radius: 4px;
-  width: 100%;
+  width: 135%;
   height: 35px;
 
 }
 
 .passwordIcon {
   border: none;
-  margin-left: -10%;
+  margin-left: 100%;
+  margin-top: 35%;
+  padding-top: 0%;
+  background-color: white;
 }
 
 .right {
